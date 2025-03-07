@@ -18,8 +18,8 @@ services:
     ports:
       - "8099:80" # HTTP
     environment:
-      SERVER_NAME: :80
-      WORDPRESS_DB_HOST: frankenwp
+      SERVER_NAME: frankenwp.home.lab:80
+      WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: frankenwp
       WORDPRESS_DB_PASSWORD: frankenwp
       WORDPRESS_DB_NAME: frankenwp
@@ -29,15 +29,12 @@ services:
         auto_https disable_redirects
         debug
       WORDPRESS_CONFIG_EXTRA: |
-          define('WP_SITEURL', 'http://localhost:8099');
-          define('WP_HOME', 'http://localhost:8099');
-    volumes:
+          define('WP_SITEURL', 'http://frankenwp.home.lab:8099');
+          define('WP_HOME', 'http://frankenwp.home.lab:8099');
     volumes:
       - type: bind
         source: /var/lib/frankenwp/web
         target: /var/www/html
-
-	  
     depends_on:
       - db
     tty: true
