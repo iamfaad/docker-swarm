@@ -12,7 +12,9 @@ services:
       - semaphore
     hostname: postgres-semaphore
     volumes:
-      - /nfs/volumes/semaphore/db:/var/lib/postgresql/data
+      - type: bind
+        source: /var/lib/semaphore/db
+        target: /var/lib/postgresql/data
     environment:
       POSTGRES_USER: semaphore
       POSTGRES_PASSWORD: Admin@123
@@ -33,7 +35,9 @@ services:
     ports:
      - 4001:3000
     volumes:
-      - /nfs/volumes/semaphore/app:/tmp/semaphore
+      - type: bind
+        source: /var/lib/semaphore/app
+        target: /tmp/semaphore
     environment:
       SEMAPHORE_DB_USER: semaphore
       SEMAPHORE_DB_PASS: Admin@123

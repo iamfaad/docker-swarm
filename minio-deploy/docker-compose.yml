@@ -52,10 +52,10 @@ services:
     hostname: minio{{.Task.Slot}}
     volumes:
       - type: bind
-        source: /minio-storage/data1
+        source: /var/lib/minio-storage/data1
         target: /data1
       - type: bind
-        source: /minio-storage/data2
+        source: /var/lib/minio-storage/data2
         target: /data2
     networks:
       - minio-overlay-network
