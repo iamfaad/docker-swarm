@@ -1,0 +1,46 @@
+version: '3.1'
+services:
+  odoo-web:
+    networks:
+     - odoo-network
+     - dokploy-network
+    deploy:
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.odoo-web.entrypoints=web
+        - traefik.http.routers.odoo-web.rule=Host(`odoo.home.lab`)
+        - traefik.http.routers.odoo-web.service=odoo-web
+        - traefik.http.services.odoo-web.loadbalancer.server.port=8069
+        - traefik.http.routers.odoo-web.entrypoints=web
+        - traefik.http.routers.odoo-web.rule=Host(`odoo.home.lab`)
+        - traefik.http.routers.odoo-web.service=odoo-web
+        - traefik.http.services.odoo-web.loadbalancer.server.port=8072
+
+    image: odoo:17.0
+    depends_on:
+      - odoo-db
+    ports:
+      - "8069:8069"
+      - “8072: 8072”
+    volumes:
+      - /nfs/volumes/odoo/web:/var/lib/odoo
+    environment:
+    - HOST=odoo-db
+    - USER=odoo
+    - PASSWORD=myodoo
+  odoo-db:
+    networks:
+    - odoo-network
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=myodoo
+      - POSTGRES_USER=odoo
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - /nfs/volumes/odoo/db:/var/lib/postgresql/data/pgdata
+networks:
+  odoo-network:
+  dokploy-network: 
+    external: true
+

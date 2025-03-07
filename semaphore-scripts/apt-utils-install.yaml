@@ -1,0 +1,7 @@
+---
+ - hosts: all
+   tasks:
+   - name: install-apt-utils
+     ansible.builtin.apt:
+       name: "apt-utils"
+       state: latest
